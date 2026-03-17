@@ -1,12 +1,54 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+import os
 
 
 class Gallery(models.Model):
     image = models.ImageField(upload_to="gallery_images/")
     updated_at = models.DateTimeField(auto_now=True)
+    
 
     def __str__(self):
         return f"Gallery Image {self.id}"
+
+
+
+def validate_file(file):
+    valid_extensions = ['.pdf', '.jpg', '.jpeg', '.png', '.gif', '.webp']
+    ext = os.path.splitext(file.name)[1].lower()
+    if ext not in valid_extensions:
+        raise ValidationError(f'Unsupported file type. Allowed: {", ".join(valid_extensions)}')
+
+class Notice(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    attachment = models.FileField(
+        upload_to='notices/attachments/',
+        validators=[validate_file],
+        null=True, blank=True
+    )
+    converted_pdf = models.FileField(
+        upload_to='notices/pdfs/',
+        null=True, blank=True
+    )
+
+    def __str__(self):
+        return self.title
+
+    def is_image(self):
+        image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+        if self.attachment:
+            ext = os.path.splitext(self.attachment.name)[1].lower()
+            return ext in image_extensions
+        return False
+
+    def get_final_pdf(self):
+        """Always returns the best PDF available."""
+        if self.converted_pdf:
+            return self.converted_pdf
+        return self.attachment
+    
 
 
 class Admission(models.Model):
