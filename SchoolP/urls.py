@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('your_app_name.urls')),  # change app name here
+    path('api/', include('App.urls')),  # change app name here
 ]
 
 # media files (important for images)
