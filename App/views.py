@@ -12,8 +12,10 @@ from .serializers import (
 
 
 class GalleryViewSet(viewsets.ModelViewSet):
-    queryset = Gallery.objects.all()
+    queryset = Gallery.objects.all().order_by("-updated_at")
     serializer_class = GallerySerializer
+    
+    
 
 
 class AdmissionViewSet(viewsets.ModelViewSet):

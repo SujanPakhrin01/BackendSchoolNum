@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'App',
     "rest_framework",
     'drf_yasg',
+      'django_seed',
 ]
 
 MIDDLEWARE = [
@@ -81,6 +82,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Password validation
