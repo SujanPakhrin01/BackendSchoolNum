@@ -27,8 +27,10 @@ SECRET_KEY = 'django-insecure-0@imq)5qft%qymjdjvd*6=-f#jl)1=2hp0jtgg+z59)3th!h+8
 DEBUG = False
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ["schoolp.onrender.com"]
 
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "schoolp.onrender.com"]
 
 # Application definition
 
@@ -49,13 +51,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -83,12 +85,12 @@ WSGI_APPLICATION = 'SchoolP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -140,8 +142,29 @@ REST_FRAMEWORK = {
 }
 CORS_ALLOW_ALL_ORIGINS = True
 
-import dj_database_url
-DATABASES = {
-    'default': dj_database_url.config(default='postgresql://schooldb_zz0y_user:eQ8fXF56rVKkubuvffT9U6HwNSN47MzR@dpg-d6trugpaae7s73e4l2rg-a/schooldb_zz0y')
-}
+# import dj_database_url
+# DATABASES = {
+#     'default': dj_database_url.config(default='postgresql://schooldb_zz0y_user:eQ8fXF56rVKkubuvffT9U6HwNSN47MzR@dpg-d6trugpaae7s73e4l2rg-a/schooldb_zz0y')
+# }
 
+import os
+import dj_database_url
+
+if "DATABASE_URL" in os.environ:
+    DATABASES = {
+    'default': dj_database_url.config(default='postgresql://schooldb_zz0y_user:eQ8fXF56rVKkubuvffT9U6HwNSN47MzR@dpg-d6trugpaae7s73e4l2rg-a/schooldb_zz0y')
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"

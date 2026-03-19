@@ -1,6 +1,7 @@
-from django.urls import path, include
+# App/urls.py
 from rest_framework.routers import DefaultRouter
-from .views import (GalleryViewSet,AdmissionViewSet, NoticeViewSet,AdmissionTeacherViewSet)
+from django.urls import path, include
+from .views import GalleryViewSet, AdmissionViewSet, NoticeViewSet, AdmissionTeacherViewSet
 
 router = DefaultRouter()
 router.register(r'Gallery', GalleryViewSet)
