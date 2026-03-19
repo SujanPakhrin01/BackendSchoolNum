@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0@imq)5qft%qymjdjvd*6=-f#jl)1=2hp0jtgg+z59)3th!h+8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -53,8 +55,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'SchoolP.urls'
 
@@ -135,3 +139,9 @@ REST_FRAMEWORK = {
     ],
 }
 CORS_ALLOW_ALL_ORIGINS = True
+
+import dj_database_url
+DATABASES = {
+    'default': dj_database_url.config(default='postgresql://schooldb_zz0y_user:eQ8fXF56rVKkubuvffT9U6HwNSN47MzR@dpg-d6trugpaae7s73e4l2rg-a/schooldb_zz0y')
+}
+
